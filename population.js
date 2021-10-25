@@ -1,7 +1,8 @@
+//this works with Normalization method for data referining
 const mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/playground')
+//Connects to db
+mongoose.connect('mongodb://127.0.0.1:27017/playground')
   .then(() => console.log('Connected to MongoDB...'))
   .catch(err => console.error('Could not connect to MongoDB...', err));
 
@@ -11,10 +12,17 @@ const Author = mongoose.model('Author', new mongoose.Schema({
   website: String
 }));
 
+// instatiate model
 const Course = mongoose.model('Course', new mongoose.Schema({
   name: String,
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Author"
+  }
 }));
 
+
+//create author function
 async function createAuthor(name, bio, website) { 
   const author = new Author({
     name, 
@@ -39,11 +47,12 @@ async function createCourse(name, author) {
 async function listCourses() { 
   const courses = await Course
     .find()
+    .populate('author', 'name -_id') // this will exclude id and only pick the name of the auther
     .select('name');
   console.log(courses);
 }
 
-createAuthor('Kayode', 'My bio', 'My Website');
+// createAuthor('Kayode', 'My bio', 'My Website');
 
 // createCourse('Node Course', 'authorId')
 
