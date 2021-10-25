@@ -16,6 +16,7 @@
   "author": "Kayode Adeniyi",
   "license": "ISC",
   "dependencies": {
+    "@hapi/joi": "^15.0.3",
     "express": "^4.17.1",
     "fawn": "^2.1.5",
     "joi": "^17.4.2",
